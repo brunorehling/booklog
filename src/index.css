@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fundo: #FAF5FF;
+  --color-superficie: #FFFFFF;
+  --color-superficie-2: #F3E8FF;
+  --color-texto: #4C1D95;
+  --color-texto-forte: #2E1065;
+  --color-texto-2: #6B5B95;
+  --color-borda: #E4D4F7;
+  --color-primaria: #7C3AED;
+  --color-primaria-hover: #6D28D9;
+  --color-sobre-primaria: #FFFFFF;
+  --color-cta: #15803D;
+  --color-cta-hover: #166534;
+
+  --font-titulo: "Cormorant Garamond", Garamond, Georgia, serif;
+  --font-corpo: "Libre Baskerville", Georgia, "Times New Roman", serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-fundo: #0F0A1A;
+    --color-superficie: #1A1229;
+    --color-superficie-2: #251A3A;
+    --color-texto: #EDE9FE;
+    --color-texto-forte: #FFFFFF;
+    --color-texto-2: #B4A7D6;
+    --color-borda: #33264D;
+    --color-primaria: #A78BFA;
+    --color-primaria-hover: #C4B5FD;
+    --color-sobre-primaria: #1E0B3B;
+    --color-cta: #22C55E;
+    --color-cta-hover: #4ADE80;
+  }
+}
+
+body {
+  background: var(--color-fundo);
+  color: var(--color-texto);
+  font-family: var(--font-corpo);
+}

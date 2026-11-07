@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Booklog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       DESIGN SYSTEM (gerado com a skill ui-ux-pro-max)
+       Padrão: Community Landing · Estilo: Flat Design
+       Sem sombras e sem gradientes; hover só com cor (150–200ms).
+       ========================================================= */
+    :root {
+      --bg: #FAF5FF;          /* Background */
+      --surface: #FFFFFF;
+      --surface-2: #F3E8FF;   /* realce suave */
+      --text: #4C1D95;        /* Text */
+      --text-strong: #2E1065;
+      --muted: #6B5B95;       /* secundário (contraste 5.6:1 no fundo) */
+      --border: #E4D4F7;
+      --primary: #7C3AED;     /* Primary */
+      --primary-hover: #6D28D9;
+      --on-primary: #FFFFFF;
+      --secondary: #A78BFA;   /* Secondary */
+      --cta: #15803D;         /* verde do CTA (versão escura do #22C55E pra texto branco passar 4.5:1) */
+      --cta-hover: #166534;
+      --on-cta: #FFFFFF;
+      --danger: #B91C1C;
+
+      --radius: 10px;
+      --font-heading: "Cormorant Garamond", Garamond, Georgia, serif;
+      --font-body: "Libre Baskerville", Georgia, "Times New Roman", serif;
+      --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+      /* escala de z-index */
+      --z-header: 10;
+      --z-toast: 50;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0F0A1A;
+        --surface: #1A1229;
+        --surface-2: #251A3A;
+        --text: #EDE9FE;
+        --text-strong: #FFFFFF;
+        --muted: #B4A7D6;
+        --border: #33264D;
+        --primary: #A78BFA;
+        --primary-hover: #C4B5FD;
+        --on-primary: #1E0B3B;
+        --secondary: #7C3AED;
+        --cta: #22C55E;
+        --cta-hover: #4ADE80;
+        --on-cta: #052E16;
+        --danger: #FCA5A5;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0F0A1A;
+      --surface: #1A1229;
+      --surface-2: #251A3A;
+      --text: #EDE9FE;
+      --text-strong: #FFFFFF;
+      --muted: #B4A7D6;
+      --border: #33264D;
+      --primary: #A78BFA;
+      --primary-hover: #C4B5FD;
+      --on-primary: #1E0B3B;
+      --secondary: #7C3AED;
+      --cta: #22C55E;
+      --cta-hover: #4ADE80;
+      --on-cta: #052E16;
+      --danger: #FCA5A5;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0 0 auto; z-index: var(--z-header);
+      height: env(safe-area-inset-top, 0px); background: var(--bg);
+    }
+    button { font: inherit; cursor: pointer; color: inherit; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    input, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+    .icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    .container {
+      max-width: 1152px; margin: 0 auto;
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+
+    /* ---------- BOTÕES (alvo de toque 44px) ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px; border-radius: var(--radius);
+      border: 2px solid var(--border); background: var(--surface); color: var(--text);
+      font-family: var(--font-ui); font-weight: 600; font-size: .95rem; white-space: nowrap;
+      transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); color: var(--on-primary); }
+    .btn-cta { background: var(--cta); border-color: var(--cta); color: var(--on-cta); }
+    .btn-cta:hover:not(:disabled) { background: var(--cta-hover); border-color: var(--cta-hover); color: var(--on-cta); }
+    .btn-icon { width: 44px; padding: 0; border-color: transparent; background: transparent; }
+    .btn-block { width: 100%; }
+
+    /* ---------- HEADER ---------- */
+    header {
+      position: sticky; top: env(safe-area-inset-top, 0px); z-index: var(--z-header);
+      background: var(--bg); border-bottom: 2px solid var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 12px; }
+    .logo {
+      display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-strong);
+      font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; line-height: 1;
+    }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 8px; background: var(--primary); color: var(--on-primary);
+      display: grid; place-items: center;
+    }
+    .nav-actions { display: flex; gap: 8px; align-items: center; min-width: 0; }
+    .user-name { font-family: var(--font-ui); font-size: .9rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 16ch; }
+
+    /* ---------- HERO ---------- */
+    .hero { padding-block: 48px 24px; }
+    .hero-copy { display: flex; flex-direction: column; }
+    .tag {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-ui); font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--primary); background: var(--surface-2); padding: 6px 12px; border-radius: 999px;
+    }
+    .tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cta); }
+    .hero h1 {
+      margin-top: 18px; font-family: var(--font-heading); font-weight: 700; color: var(--text-strong);
+      font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1; letter-spacing: -.01em; text-wrap: balance;
+    }
+    .hero h1 em { color: var(--primary); }
+    .hero p { margin-top: 16px; color: var(--muted); max-width: 46ch; }
+    .search {
+      margin-top: 28px; display: flex; align-items: center; gap: 8px; max-width: 540px;
+      background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 4px 4px 4px 14px; transition: border-color .18s ease;
+    }
+    .search:focus-within { border-color: var(--primary); }
+    .search .icon { color: var(--muted); }
+    .search input { flex: 1; min-width: 0; min-height: 44px; border: none; outline: none; background: transparent; font-family: var(--font-ui); font-size: 1rem; }
+
+    /* ---------- NAVEGAÇÃO ENTRE TELAS ---------- */
+    .tabs { display: flex; gap: 4px; align-self: stretch; }
+    .tab {
+      display: inline-flex; align-items: center; gap: 8px; padding: 0 14px;
+      font-family: var(--font-ui); font-size: .95rem; font-weight: 600; color: var(--muted); text-decoration: none;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: color .18s ease, border-color .18s ease;
+    }
+    .tab:hover { color: var(--primary); }
+    .tab[aria-current="page"] { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab .icon { width: 18px; height: 18px; }
+    .soon {
+      font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      padding: 2px 6px; border-radius: 999px; background: var(--surface-2); color: var(--primary);
+    }
+    .tabs-mobile { display: none; }
+
+    /* ---------- TELA: LEITURAS FUTURAS ---------- */
+    .page-head { padding-block: 48px 24px; }
+    .page-head h1 { font-family: var(--font-heading); font-weight: 700; color: var(--text-strong); font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.05; text-wrap: balance; margin-top: 16px; }
+    .page-head p { margin-top: 12px; color: var(--muted); max-width: 56ch; }
+    .coming {
+      margin-bottom: 56px; padding: 40px 24px; text-align: center;
+      border: 2px dashed var(--border); border-radius: 16px; background: var(--surface);
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .coming-icon { width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; background: var(--surface-2); color: var(--primary); }
+    .coming-icon .icon { width: 30px; height: 30px; }
+    .coming h2 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--text-strong); line-height: 1.1; }
+    .coming p { color: var(--muted); max-width: 48ch; font-size: .95rem; }
+    .coming ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; font-family: var(--font-ui); font-size: .88rem; }
+    .coming li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--surface-2); color: var(--text); }
+    .coming li .icon { width: 16px; height: 16px; color: var(--primary); }
+
+    /* ---------- LEITORES ATIVOS ---------- */
+    .section { padding-block: 24px; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .section-head h2 { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--text-strong); line-height: 1.1; }
+    .section-head p { font-family: var(--font-ui); font-size: .9rem; color: var(--muted); }
+    .members { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+    .member {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+      min-height: 52px; padding: 6px 16px 6px 6px; border-radius: 999px;
+      background: var(--surface); border: 2px solid var(--border);
+      font-family: var(--font-ui); font-size: .9rem; text-align: left;
+      transition: border-color .18s ease, background-color .18s ease;
+    }
+    .member:hover { border-color: var(--primary); }
+    .member[aria-pressed="true"] { background: var(--surface-2); border-color: var(--primary); }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+      font-family: var(--font-heading); font-weight: 700; font-size: 1.15rem; color: #FFFFFF; text-transform: uppercase;
+    }
+    .member b { display: block; font-weight: 600; color: var(--text-strong); line-height: 1.2; }
+    .member small { color: var(--muted); }
+
+    /* ---------- TOOLBAR ---------- */
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      min-height: 44px; padding: 0 16px; border-radius: 999px;
+      border: 2px solid var(--border); background: var(--surface); color: var(--muted);
+      font-family: var(--font-ui); font-size: .9rem; font-weight: 600;
+      transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .chip:hover { border-color: var(--primary); color: var(--primary); }
+    .chip.active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+    .filter-note { font-family: var(--font-ui); font-size: .9rem; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .link-btn { border: none; background: none; color: var(--primary); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; }
+
+    /* ---------- GRID DE REVIEWS ---------- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; padding-bottom: 32px; }
+    .card {
+      background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
+      padding: 20px; display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 18px;
+      text-align: left; color: inherit;
+      transition: border-color .18s ease, background-color .18s ease;
+    }
+    .card:hover { border-color: var(--primary); background: var(--surface-2); }
+    .cover {
+      width: 80px; aspect-ratio: 2 / 3; max-width: 100%; border-radius: 6px;
+      display: flex; flex-direction: column; justify-content: space-between; padding: 10px 8px;
+      color: #FFFFFF; overflow: hidden; background-size: cover; background-position: center;
+    }
+    .cover-title { font-family: var(--font-heading); font-weight: 700; font-size: .9rem; line-height: 1.05; overflow-wrap: anywhere; }
+    .cover-line { height: 3px; width: 28px; background: currentColor; opacity: .7; border-radius: 2px; }
+    .card-body { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+    .card-title { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; line-height: 1.1; color: var(--text-strong); text-wrap: balance; }
+    .card-author { font-family: var(--font-ui); font-size: .9rem; color: var(--muted); }
+    .rating { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-ui); font-size: .85rem; color: var(--muted); }
+    .stars { display: inline-flex; gap: 2px; }
+    .stars svg { width: 16px; height: 16px; }
+    .star-on { color: var(--primary); fill: currentColor; }
+    .star-off { color: var(--border); fill: currentColor; }
+    .excerpt {
+      font-size: .92rem; line-height: 1.65;
+      display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .meta {
+      margin-top: auto; padding-top: 12px; border-top: 2px solid var(--border);
+      display: flex; align-items: center; gap: 16px; font-family: var(--font-ui); font-size: .85rem; color: var(--muted);
+    }
+    .meta .who { margin-right: auto; display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-weight: 600; min-width: 0; }
+    .meta .who .avatar { width: 26px; height: 26px; font-size: .85rem; flex-shrink: 0; }
+    .meta .who span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .meta .count { display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums; }
+    .meta .icon { width: 17px; height: 17px; }
+
+    /* skeleton (reserva o espaço enquanto carrega) */
+    .skeleton { pointer-events: none; }
+    .sk { background: var(--surface-2); border-radius: 6px; animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .5; } }
+
+    .empty {
+      grid-column: 1 / -1; text-align: center; padding: 48px 16px;
+      border: 2px dashed var(--border); border-radius: 14px; color: var(--muted); font-family: var(--font-ui);
+    }
+    .empty strong { display: block; font-family: var(--font-heading); font-size: 1.6rem; color: var(--text-strong); margin-bottom: 4px; }
+
+    /* ---------- CTA DE ENTRADA ---------- */
+    .join {
+      margin-block: 24px 56px; padding: 32px; border-radius: 16px;
+      background: var(--surface-2); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    }
+    .join h2 { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--text-strong); line-height: 1.1; }
+    .join p { margin-top: 6px; color: var(--muted); max-width: 52ch; }
+
+    /* ---------- MODAL ---------- */
+    dialog {
+      border: 2px solid var(--border); border-radius: 16px; padding: 0;
+      background: var(--surface); color: var(--text);
+      width: min(640px, calc(100% - 32px)); max-height: 88vh; margin: auto;
+    }
+    dialog[open] { animation: fade .2s ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+    dialog::backdrop { background: rgba(30, 11, 59, .6); }
+    .modal-inner { padding: 28px; overflow-y: auto; max-height: 88vh; }
+    .modal-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 20px; }
+    .modal-head h3 { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; line-height: 1.05; color: var(--text-strong); text-wrap: balance; }
+    .modal-sub { font-family: var(--font-ui); font-size: .92rem; color: var(--muted); margin-top: 4px; }
+    .close {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 2px solid transparent; background: none; color: var(--muted); display: grid; place-items: center;
+      transition: border-color .18s ease, color .18s ease;
+    }
+    .close:hover { border-color: var(--border); color: var(--text); }
+
+    .review-head { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: start; margin-bottom: 22px; }
+    .review-head .cover { width: 96px; }
+    .review-head .rating { margin-top: 10px; }
+    .review-full { white-space: pre-wrap; margin-bottom: 22px; font-size: 1rem; line-height: 1.8; max-width: 65ch; }
+
+    .reactions { display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 22px; margin-bottom: 20px; border-bottom: 2px solid var(--border); }
+    .reaction {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
+      border-radius: 999px; border: 2px solid var(--border); background: var(--surface);
+      font-family: var(--font-ui); font-size: .9rem; font-weight: 600;
+      transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .reaction:hover { border-color: var(--primary); color: var(--primary); }
+    .reaction[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+    .comments h4 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--text-strong); margin-bottom: 8px; }
+    .comment { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding-block: 12px; border-top: 2px solid var(--border); font-size: .92rem; }
+    .comment:first-child { border-top: none; }
+    .comment .avatar { width: 34px; height: 34px; font-size: 1rem; }
+    .comment strong { display: block; font-family: var(--font-ui); font-size: .85rem; color: var(--text-strong); }
+    .muted-note { font-family: var(--font-ui); color: var(--muted); font-size: .92rem; padding-block: 8px; }
+    .comment-form { display: flex; gap: 8px; margin-top: 14px; }
+    .comment-form input {
+      flex: 1; min-width: 0; min-height: 44px; padding: 0 14px; outline: none;
+      background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); font-family: var(--font-ui);
+    }
+    .comment-form input:focus { border-color: var(--primary); }
+
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field label, .field .label { font-family: var(--font-ui); font-size: .9rem; font-weight: 600; color: var(--text-strong); }
+    .field input, .field textarea {
+      min-height: 44px; padding: 10px 14px; outline: none; font-family: var(--font-ui); font-size: 1rem;
+      background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius);
+      transition: border-color .18s ease;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--primary); }
+    .field textarea { min-height: 140px; resize: vertical; font-family: var(--font-body); line-height: 1.7; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .star-input { display: flex; align-items: center; gap: 2px; }
+    .star-input button { width: 44px; height: 44px; display: grid; place-items: center; border: none; background: none; color: var(--border); border-radius: 8px; transition: color .15s ease; }
+    .star-input button svg { width: 30px; height: 30px; fill: currentColor; }
+    .star-input button.on { color: var(--primary); }
+    .star-input button:hover { color: var(--secondary); }
+    .star-value { margin-left: 8px; font-family: var(--font-ui); font-size: .9rem; color: var(--muted); }
+    .error { color: var(--danger); font-family: var(--font-ui); font-size: .9rem; margin-bottom: 12px; min-height: 1.4em; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+    /* ---------- TOAST ---------- */
+    .toast {
+      position: fixed; left: 50%; z-index: var(--z-toast);
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%) translateY(140px);
+      background: var(--text-strong); color: var(--bg); padding: 12px 20px; border-radius: var(--radius);
+      font-family: var(--font-ui); font-size: .95rem; font-weight: 500; max-width: calc(100% - 32px);
+      transition: transform .22s ease;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    footer { border-top: 2px solid var(--border); padding-block: 24px; font-family: var(--font-ui); font-size: .9rem; color: var(--muted); }
+    footer .container { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    @media (max-width: 760px) {
+      .hero, .page-head { padding-block: 32px 16px; }
+      .nav .tabs { display: none; }
+      .tabs-mobile { display: flex; border-top: 2px solid var(--border); }
+      .tabs-mobile .tab { flex: 1; justify-content: center; min-height: 48px; }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; padding: 16px; }
+      .cover { width: 64px; }
+      .user-name, .hide-mobile { display: none; }
+      .review-head { grid-template-columns: 72px minmax(0, 1fr) auto; gap: 14px; }
+      .review-head .cover { width: 72px; }
+      .field-row { grid-template-columns: 1fr; gap: 0; }
+      .modal-inner { padding: 20px; }
+      .join { padding: 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo" aria-label="Booklog, início">
+        <span class="logo-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
+        Booklog
+      </a>
+      <nav class="tabs" aria-label="Seções">
+        <a class="tab" href="#reviews" data-route="reviews">Reviews</a>
+        <a class="tab" href="#leituras" data-route="leituras">Leituras futuras <span class="soon">Em breve</span></a>
+      </nav>
+      <div class="nav-actions">
+        <span id="userName" class="user-name"></span>
+        <button class="btn btn-icon" id="themeBtn" title="Trocar tema" aria-label="Trocar tema claro ou escuro">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+        </button>
+        <button class="btn" id="loginBtn">Entrar</button>
+        <button class="btn btn-cta" id="newReviewBtn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Nova<span class="hide-mobile"> review</span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="tabs tabs-mobile container" aria-label="Seções">
+      <a class="tab" href="#reviews" data-route="reviews">Reviews</a>
+      <a class="tab" href="#leituras" data-route="leituras">Leituras futuras</a>
+    </nav>
+  </header>
+
+  <main class="container">
+   <!-- ================= TELA: REVIEWS ================= -->
+   <div data-view="reviews">
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="tag"><span class="dot"></span>Comunidade de leitores</span>
+        <h1>O que você anda <em>lendo</em>?</h1>
+        <p>Reviews de quem leu até a última página. Descubra seu próximo livro, comente e compartilhe o que achou.</p>
+        <form class="search" id="searchForm" role="search">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="searchInput" class="sr-only">Buscar por título ou autor</label>
+          <input type="search" id="searchInput" placeholder="Buscar por título ou autor" />
+          <button class="btn btn-primary" type="submit">Buscar</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= LEITORES ATIVOS ================= -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Leitores ativos</h2>
+        <p>Toque em alguém pra ver só as reviews dessa pessoa</p>
+      </div>
+      <div class="members" id="members"></div>
+    </section>
+
+    <!-- ================= LISTA ================= -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Reviews recentes</h2>
+        <div class="chips" id="chips" aria-label="Ordenar reviews">
+          <button class="chip active" data-sort="recent">Recentes</button>
+          <button class="chip" data-sort="best">Melhor avaliadas</button>
+          <button class="chip" data-sort="comments">Mais comentadas</button>
+        </div>
+      </div>
+      <div class="filter-note" id="filterNote" hidden></div>
+      <div class="grid" id="grid"></div>
+    </section>
+   </div>
+
+   <!-- ================= TELA: LEITURAS FUTURAS =================
+        Aqui entra a lista de livros que cada usuário quer ler depois.
+        Quando a rota da API existir, troque o bloco .coming pela lista. -->
+   <div data-view="leituras" hidden>
+    <section class="page-head">
+      <span class="tag"><span class="dot"></span>Sua lista</span>
+      <h1>Leituras futuras</h1>
+      <p>Guarde aqui os livros que você quer ler depois e veja o que a turma está planejando ler.</p>
+    </section>
+    <section class="coming">
+      <span class="coming-icon">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      <span class="soon">Em breve</span>
+      <h2>Essa seção ainda está sendo construída</h2>
+      <p>Logo você vai poder montar sua fila de leitura direto por aqui.</p>
+      <ul>
+        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Adicionar livros</li>
+        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Marcar como lido</li>
+        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Escrever a review depois</li>
+      </ul>
+    </section>
+   </div>
+
+    <!-- ================= CTA ================= -->
+    <section class="join" id="joinCta">
+      <div>
+        <h2>Faça parte da comunidade</h2>
+        <p>Entre pra publicar suas reviews, comentar e reagir ao que a turma está lendo.</p>
+      </div>
+      <button class="btn btn-cta" id="joinBtn">Entrar no Booklog</button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>Booklog, feito em aula</span>
+    </div>
+  </footer>
+
+  <!-- ================= MODAL: VER REVIEW ================= -->
+  <dialog id="reviewModal" aria-label="Review">
+    <div class="modal-inner" id="reviewModalContent"></div>
+  </dialog>
+
+  <!-- ================= MODAL: NOVA REVIEW ================= -->
+  <dialog id="newReviewModal" aria-labelledby="newReviewTitle">
+    <form class="modal-inner" id="newReviewForm">
+      <div class="modal-head">
+        <div>
+          <h3 id="newReviewTitle">Nova review</h3>
+          <p class="modal-sub">Conte pra turma o que achou do livro.</p>
+        </div>
+        <button type="button" class="close" data-close aria-label="Fechar">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="fTitle">Livro</label>
+          <input id="fTitle" required placeholder="Ex: Dom Casmurro" />
+        </div>
+        <div class="field">
+          <label for="fAuthor">Autor</label>
+          <input id="fAuthor" required placeholder="Ex: Machado de Assis" />
+        </div>
+      </div>
+      <div class="field">
+        <span class="label" id="ratingLabel">Nota</span>
+        <div class="star-input" id="starInput" role="radiogroup" aria-labelledby="ratingLabel"></div>
+      </div>
+      <div class="field">
+        <label for="fContent">Sua review</label>
+        <textarea id="fContent" required placeholder="O que você achou?"></textarea>
+      </div>
+      <p class="error" id="reviewError" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" class="btn" data-close>Cancelar</button>
+        <button class="btn btn-cta" type="submit">Publicar review</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ================= MODAL: LOGIN ================= -->
+  <dialog id="loginModal" aria-labelledby="loginTitle">
+    <form class="modal-inner" id="loginForm">
+      <div class="modal-head">
+        <div>
+          <h3 id="loginTitle">Entrar</h3>
+          <p class="modal-sub">Use o e-mail e a senha da sua conta.</p>
+        </div>
+        <button type="button" class="close" data-close aria-label="Fechar">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="field">
+        <label for="lEmail">E-mail</label>
+        <input id="lEmail" type="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="lPassword">Senha</label>
+        <input id="lPassword" type="password" required autocomplete="current-password" />
+      </div>
+      <p class="error" id="loginError" role="alert"></p>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* =========================================================
+       CONFIG DA API — ajuste pra bater com as suas rotas
+       ========================================================= */
+    const API_URL = "https://SUA-API-AQUI.com"; // ex: https://booklog-api.onrender.com
+
+    const ROUTES = {
+      login:        () => `/auth/login`,              // POST { email, password } -> { token, user }
+      listReviews:  () => `/reviews`,                 // GET  -> Review[]
+      createReview: () => `/reviews`,                 // POST { bookTitle, author, rating, content }
+      comments:     (id) => `/reviews/${id}/comments`, // GET / POST { content }
+      react:        (id) => `/reviews/${id}/reactions` // POST { type } (toggle)
+    };
+
+    // Se a API não responder, mostra dados de exemplo (bom pra mexer no visual offline)
+    const USE_MOCK_ON_ERROR = true;
+
+    /* =========================================================
+       ADAPTADOR — converte o JSON da sua API pro formato que a tela usa.
+       Se os campos do seu Prisma tiverem outros nomes, muda SÓ aqui.
+       ========================================================= */
+    function adaptReview(r) {
+      return {
+        id: r.id,
+        title: r.book?.title ?? r.bookTitle ?? r.title ?? "Sem título",
+        author: r.book?.author ?? r.author ?? "Autor desconhecido",
+        cover: r.book?.coverUrl ?? r.coverUrl ?? null,
+        rating: Number(r.rating ?? 0),
+        content: r.content ?? r.text ?? "",
+        user: r.user?.name ?? r.user?.username ?? "Anônimo",
+        createdAt: r.createdAt ?? new Date().toISOString(),
+        commentsCount: r._count?.comments ?? r.comments?.length ?? 0,
+        likes: r._count?.reactions ?? r.likes ?? 0
+      };
+    }
+
+    /* ---------- estado ---------- */
+    let reviews = [];
+    let sortMode = "recent";
+    let query = "";
+    let userFilter = null;
+    let token = safeGet("booklog_token");
+    let user = JSON.parse(safeGet("booklog_user") || "null");
+
+    /* ---------- helpers ---------- */
+    function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+    function safeSet(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} }
+
+    async function api(path, options = {}) {
+      const res = await fetch(API_URL + path, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...options.headers
+        }
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || body.error || `Erro ${res.status}`);
+      }
+      return res.status === 204 ? null : res.json();
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    // desativa o botão enquanto a requisição roda
+    async function withLoading(btn, label, fn) {
+      const original = btn.innerHTML;
+      btn.disabled = true; btn.textContent = label;
+      try { return await fn(); } finally { btn.disabled = false; btn.innerHTML = original; }
+    }
+
+    /* ---------- ícones (estilo Lucide) ---------- */
+    const svg = (d, extra = "") => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+    const ICON = {
+      comment: svg(`<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>`),
+      heart: svg(`<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>`),
+      thumbs: svg(`<path d="M7 10v12"/><path d="M15 5.9 14 10h5.8a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.4 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>`),
+      laugh: svg(`<circle cx="12" cy="12" r="10"/><path d="M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5z"/><path d="M9 9h.01M15 9h.01"/>`),
+      close: svg(`<path d="M6 6l12 12M18 6 6 18"/>`)
+    };
+    const STAR_PATH = `<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>`;
+
+    function starsHtml(n) {
+      const r = Math.max(0, Math.min(5, Math.round(n)));
+      const stars = [1, 2, 3, 4, 5].map(i => `<svg viewBox="0 0 24 24" class="${i <= r ? "star-on" : "star-off"}" aria-hidden="true">${STAR_PATH}</svg>`).join("");
+      return `<span class="rating"><span class="stars" role="img" aria-label="Nota ${r} de 5">${stars}</span>${r}/5</span>`;
+    }
+
+    // cor sólida (flat) a partir de um texto
+    function hueOf(s) {
+      let h = 0;
+      for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360;
+      return h;
+    }
+    function flatColor(s) { return `hsl(${hueOf(s)} 48% 38%)`; }
+
+    function coverHtml(r) {
+      if (r.cover) return `<div class="cover" style="background-image:url('${encodeURI(r.cover)}')" role="img" aria-label="Capa de ${escapeHtml(r.title)}"></div>`;
+      return `<div class="cover" style="background:${flatColor(r.title)}" aria-hidden="true"><span class="cover-title">${escapeHtml(r.title)}</span><span class="cover-line"></span></div>`;
+    }
+    function avatarHtml(name) {
+      return `<span class="avatar" style="background:${flatColor(name)}" aria-hidden="true">${escapeHtml(String(name).trim().charAt(0) || "?")}</span>`;
+    }
+
+    function timeAgo(date) {
+      const d = Math.floor((Date.now() - new Date(date)) / 86400000);
+      if (d <= 0) return "hoje";
+      if (d === 1) return "ontem";
+      if (d < 30) return `há ${d} dias`;
+      return new Date(date).toLocaleDateString("pt-BR");
+    }
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => t.classList.remove("show"), 2500);
+    }
+
+    /* ---------- carregar e renderizar ---------- */
+    function renderSkeleton() {
+      document.getElementById("grid").innerHTML = Array.from({ length: 4 }, () => `
+        <div class="card skeleton" aria-hidden="true">
+          <div class="sk" style="width:80px;aspect-ratio:2/3;max-width:100%"></div>
+          <div class="card-body">
+            <div class="sk" style="height:22px;width:70%"></div>
+            <div class="sk" style="height:14px;width:40%"></div>
+            <div class="sk" style="height:14px;width:30%"></div>
+            <div class="sk" style="height:46px;width:100%;margin-top:6px"></div>
+          </div>
+        </div>`).join("");
+    }
+
+    async function loadReviews() {
+      try {
+        const data = await api(ROUTES.listReviews());
+        reviews = (Array.isArray(data) ? data : data.reviews ?? data.data ?? []).map(adaptReview);
+      } catch (err) {
+        console.warn("Falha ao buscar reviews:", err);
+        if (USE_MOCK_ON_ERROR) reviews = MOCK.map(adaptReview);
+      }
+      renderCommunity();
+      render();
+    }
+
+    // leitores que já publicaram, do mais recente pro mais antigo
+    function renderCommunity() {
+      const members = [...new Set(
+        [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(r => r.user)
+      )];
+      document.getElementById("members").innerHTML = members.length
+        ? members.map(name => `
+          <button class="member" data-user="${escapeHtml(name)}" aria-pressed="${userFilter === name}">
+            ${avatarHtml(name)}
+            <b>@${escapeHtml(name)}</b>
+          </button>`).join("")
+        : `<p class="muted-note">Ninguém publicou ainda.</p>`;
+    }
+
+    /* ---------- navegação entre telas (#reviews, #leituras) ----------
+       Pra criar uma tela nova: adicione um <div data-view="nome" hidden>
+       no <main> e um link <a class="tab" href="#nome" data-route="nome">. */
+    function showRoute() {
+      const views = [...document.querySelectorAll("[data-view]")].map(v => v.dataset.view);
+      const route = location.hash.slice(1);
+      const current = views.includes(route) ? route : "reviews";
+      document.querySelectorAll("[data-view]").forEach(v => { v.hidden = v.dataset.view !== current; });
+      document.querySelectorAll("[data-route]").forEach(a => {
+        if (a.dataset.route === current) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener("hashchange", showRoute);
+
+    function render() {
+      const grid = document.getElementById("grid");
+      let list = reviews.filter(r =>
+        (r.title + " " + r.author).toLowerCase().includes(query.toLowerCase()) &&
+        (!userFilter || r.user === userFilter)
+      );
+
+      if (sortMode === "best") list.sort((a, b) => b.rating - a.rating);
+      else if (sortMode === "comments") list.sort((a, b) => b.commentsCount - a.commentsCount);
+      else list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const note = document.getElementById("filterNote");
+      note.hidden = !userFilter;
+      if (userFilter) note.innerHTML = `Mostrando só as reviews de <strong>@${escapeHtml(userFilter)}</strong> <button class="link-btn" id="clearUser">Ver todas</button>`;
+
+      if (!list.length) {
+        grid.innerHTML = query
+          ? `<div class="empty"><strong>Nada encontrado</strong>Nenhuma review bate com “${escapeHtml(query)}”. Tente outro título ou autor.</div>`
+          : `<div class="empty"><strong>Nenhuma review ainda</strong>Clique em “Nova review” pra publicar a primeira.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(r => `
+        <button class="card" data-id="${r.id}" aria-label="Abrir review de ${escapeHtml(r.title)}">
+          ${coverHtml(r)}
+          <div class="card-body">
+            <div class="card-title">${escapeHtml(r.title)}</div>
+            <div class="card-author">${escapeHtml(r.author)}</div>
+            ${starsHtml(r.rating)}
+            <p class="excerpt">${escapeHtml(r.content)}</p>
+            <div class="meta">
+              <span class="who">${avatarHtml(r.user)}<span>@${escapeHtml(r.user)}</span></span>
+              <span class="count" title="Comentários">${ICON.comment}${r.commentsCount}<span class="sr-only"> comentários</span></span>
+              <span class="count" title="Reações">${ICON.heart}${r.likes}<span class="sr-only"> reações</span></span>
+            </div>
+          </div>
+        </button>
+      `).join("");
+    }
+
+    /* ---------- modal de review (detalhe + comentários) ---------- */
+    async function openReview(id) {
+      const r = reviews.find(x => String(x.id) === String(id));
+      if (!r) return;
+
+      const box = document.getElementById("reviewModalContent");
+      box.innerHTML = `
+        <div class="review-head">
+          ${coverHtml(r)}
+          <div style="min-width:0">
+            <h3 class="card-title" style="font-size:2rem">${escapeHtml(r.title)}</h3>
+            <div class="modal-sub">${escapeHtml(r.author)}</div>
+            ${starsHtml(r.rating)}
+            <div class="modal-sub">Review de <strong>@${escapeHtml(r.user)}</strong> · ${timeAgo(r.createdAt)}</div>
+          </div>
+          <button class="close" data-close aria-label="Fechar">${ICON.close}</button>
+        </div>
+        <p class="review-full">${escapeHtml(r.content)}</p>
+        <div class="reactions">
+          <button class="reaction" data-react="LIKE" aria-pressed="false">${ICON.thumbs}Curtir</button>
+          <button class="reaction" data-react="LOVE" aria-pressed="false">${ICON.heart}Amei</button>
+          <button class="reaction" data-react="FUNNY" aria-pressed="false">${ICON.laugh}Engraçado</button>
+        </div>
+        <div class="comments">
+          <h4>Comentários</h4>
+          <div id="commentList"><p class="muted-note">Carregando…</p></div>
+          <form class="comment-form" id="commentForm">
+            <label for="commentInput" class="sr-only">Comentário</label>
+            <input id="commentInput" placeholder="${token ? "Escreva um comentário" : "Entre pra comentar"}" ${token ? "" : "disabled"} />
+            <button class="btn btn-primary" ${token ? "" : "disabled"}>Enviar</button>
+          </form>
+        </div>
+      `;
+      document.getElementById("reviewModal").showModal();
+
+      // reações (toggle)
+      box.querySelectorAll("[data-react]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          if (!token) return toast("Entre pra reagir");
+          const flip = () => btn.setAttribute("aria-pressed", btn.getAttribute("aria-pressed") === "true" ? "false" : "true");
+          flip();
+          try { await api(ROUTES.react(r.id), { method: "POST", body: JSON.stringify({ type: btn.dataset.react }) }); }
+          catch (e) { flip(); toast(e.message); }
+        });
+      });
+
+      // comentários
+      loadComments(r.id);
+      document.getElementById("commentForm").addEventListener("submit", async e => {
+        e.preventDefault();
+        const input = document.getElementById("commentInput");
+        if (!input.value.trim()) return;
+        await withLoading(e.target.querySelector("button"), "Enviando…", async () => {
+          try {
+            await api(ROUTES.comments(r.id), { method: "POST", body: JSON.stringify({ content: input.value }) });
+            input.value = "";
+            loadComments(r.id);
+          } catch (err) { toast(err.message); }
+        });
+      });
+    }
+
+    async function loadComments(id) {
+      const list = document.getElementById("commentList");
+      try {
+        const data = await api(ROUTES.comments(id));
+        const comments = Array.isArray(data) ? data : data.comments ?? [];
+        list.innerHTML = comments.length
+          ? comments.map(c => {
+              const name = c.user?.name ?? c.user?.username ?? "anônimo";
+              return `<div class="comment">${avatarHtml(name)}<div><strong>@${escapeHtml(name)}</strong>${escapeHtml(c.content)}</div></div>`;
+            }).join("")
+          : `<p class="muted-note">Nenhum comentário ainda. Seja o primeiro.</p>`;
+      } catch {
+        list.innerHTML = `<p class="muted-note">Não foi possível carregar os comentários. Verifique a conexão com a API e tente de novo.</p>`;
+      }
+    }
+
+    /* ---------- nova review ---------- */
+    let selectedRating = 0;
+    function renderStarInput() {
+      const el = document.getElementById("starInput");
+      el.innerHTML = [1, 2, 3, 4, 5].map(n =>
+        `<button type="button" data-star="${n}" role="radio" aria-checked="${n === selectedRating}" aria-label="${n} de 5" class="${n <= selectedRating ? "on" : ""}"><svg viewBox="0 0 24 24" aria-hidden="true">${STAR_PATH}</svg></button>`
+      ).join("") + `<span class="star-value">${selectedRating ? selectedRating + " de 5" : "Escolha uma nota"}</span>`;
+    }
+
+    document.getElementById("starInput").addEventListener("click", e => {
+      const btn = e.target.closest("[data-star]");
+      if (btn) { selectedRating = Number(btn.dataset.star); renderStarInput(); }
+    });
+
+    function openNewReview() {
+      if (!token) { toast("Entre pra escrever uma review"); return openLogin(); }
+      selectedRating = 0; renderStarInput();
+      document.getElementById("newReviewModal").showModal();
+    }
+    document.getElementById("newReviewBtn").addEventListener("click", openNewReview);
+
+    document.getElementById("newReviewForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const err = document.getElementById("reviewError");
+      if (!selectedRating) { err.textContent = "Escolha uma nota de 1 a 5 estrelas antes de publicar."; return; }
+      await withLoading(e.submitter || e.target.querySelector("[type=submit]"), "Publicando…", async () => {
+        try {
+          await api(ROUTES.createReview(), {
+            method: "POST",
+            body: JSON.stringify({
+              bookTitle: document.getElementById("fTitle").value,
+              author: document.getElementById("fAuthor").value,
+              rating: selectedRating,
+              content: document.getElementById("fContent").value
+            })
+          });
+          e.target.reset(); err.textContent = "";
+          document.getElementById("newReviewModal").close();
+          toast("Review publicada");
+          loadReviews();
+        } catch (ex) { err.textContent = ex.message; }
+      });
+    });
+
+    /* ---------- login ---------- */
+    function openLogin() { document.getElementById("loginModal").showModal(); }
+
+    function updateAuthUI() {
+      document.getElementById("loginBtn").textContent = token ? "Sair" : "Entrar";
+      document.getElementById("userName").textContent = user ? `Olá, ${user.name ?? user.username ?? ""}` : "";
+      document.getElementById("joinCta").hidden = !!token;
+    }
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      if (token) {
+        token = null; user = null;
+        safeSet("booklog_token", null); safeSet("booklog_user", null);
+        updateAuthUI(); toast("Você saiu");
+      } else openLogin();
+    });
+    document.getElementById("joinBtn").addEventListener("click", openLogin);
+
+    document.getElementById("loginForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const err = document.getElementById("loginError");
+      await withLoading(e.submitter || e.target.querySelector("[type=submit]"), "Entrando…", async () => {
+        try {
+          const data = await api(ROUTES.login(), {
+            method: "POST",
+            body: JSON.stringify({
+              email: document.getElementById("lEmail").value,
+              password: document.getElementById("lPassword").value
+            })
+          });
+          token = data.token ?? data.accessToken;
+          user = data.user ?? null;
+          safeSet("booklog_token", token);
+          safeSet("booklog_user", JSON.stringify(user));
+          err.textContent = "";
+          document.getElementById("loginModal").close();
+          updateAuthUI(); toast("Bem-vindo!");
+        } catch (ex) { err.textContent = ex.message; }
+      });
+    });
+
+    /* ---------- eventos gerais ---------- */
+    document.getElementById("grid").addEventListener("click", e => {
+      const card = e.target.closest(".card:not(.skeleton)");
+      if (card) openReview(card.dataset.id);
+    });
+
+    document.getElementById("members").addEventListener("click", e => {
+      const m = e.target.closest(".member");
+      if (!m) return;
+      userFilter = userFilter === m.dataset.user ? null : m.dataset.user;
+      renderCommunity(); render();
+    });
+
+    document.getElementById("filterNote").addEventListener("click", e => {
+      if (e.target.id === "clearUser") { userFilter = null; renderCommunity(); render(); }
+    });
+
+    document.getElementById("chips").addEventListener("click", e => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      sortMode = chip.dataset.sort;
+      render();
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", e => {
+      e.preventDefault();
+      query = document.getElementById("searchInput").value;
+      render();
+    });
+    document.getElementById("searchInput").addEventListener("input", e => { query = e.target.value; render(); });
+
+    // fecha qualquer modal pelo X ou clicando fora
+    document.querySelectorAll("dialog").forEach(d => {
+      d.addEventListener("click", e => {
+        if (e.target === d || e.target.closest("[data-close]")) d.close();
+      });
+    });
+
+    // botão de tema claro/escuro
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      const root = document.documentElement;
+      const dark = root.dataset.theme === "dark" ||
+        (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+      root.dataset.theme = dark ? "light" : "dark";
+      safeSet("booklog_theme", root.dataset.theme);
+    });
+    const savedTheme = safeGet("booklog_theme");
+    if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+
+    /* ---------- dados de exemplo (só aparecem se a API falhar) ---------- */
+    const MOCK = [
+      { id: 1, bookTitle: "Dom Casmurro", author: "Machado de Assis", rating: 5, content: "Li pela segunda vez e mudei de opinião sobre a Capitu. O narrador é tão pouco confiável que o livro vira outro dependendo de como você chega nele.", user: { name: "bruno" }, createdAt: "2026-11-03", _count: { comments: 4, reactions: 12 } },
+      { id: 2, bookTitle: "Duna", author: "Frank Herbert", rating: 4, content: "Começo lento, cheio de termo inventado, mas depois da metade não dá pra largar. A parte política é o que segura.", user: { name: "ana" }, createdAt: "2026-11-01", _count: { comments: 2, reactions: 8 } },
+      { id: 3, bookTitle: "Torto Arado", author: "Itamar Vieira Junior", rating: 5, content: "Um dos melhores livros brasileiros recentes. A troca de narradoras no meio pega de surpresa.", user: { name: "carla" }, createdAt: "2026-10-28", _count: { comments: 7, reactions: 20 } },
+      { id: 4, bookTitle: "Código Limpo", author: "Robert C. Martin", rating: 3, content: "Tem coisa boa, mas muita regra envelheceu mal. Vale ler com senso crítico.", user: { name: "dev_joao" }, createdAt: "2026-10-20", _count: { comments: 9, reactions: 5 } },
+      { id: 5, bookTitle: "O Hobbit", author: "J. R. R. Tolkien", rating: 4, content: "Leve, divertido e bem mais simples que O Senhor dos Anéis. Ótima porta de entrada.", user: { name: "lu" }, createdAt: "2026-10-15", _count: { comments: 1, reactions: 3 } }
+    ];
+
+    /* ---------- start ---------- */
+    updateAuthUI();
+    showRoute();
+    renderSkeleton();
+    loadReviews();
+  </script>
+</body>
+</html>
